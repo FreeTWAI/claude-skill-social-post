@@ -9,11 +9,11 @@
 
 加入公會／Fork 不代表已連接本人社群帳號，也不表示 live 回覆／發布全面驗收或已自動上線。
 
-工坊 Fork：上游產品／授權來源為 [Hao0321/claude-skill-social-post](https://github.com/Hao0321/claude-skill-social-post)；本次協作的 Issue／PR 送到 **FreeTWAI-AI/claude-skill-social-post**，不是自動送往上游。
+工坊 Fork：上游產品／授權來源為 [Hao0321/claude-skill-social-post](https://github.com/Hao0321/claude-skill-social-post)；本次協作的 Issue／PR 送到 **FreeTWAI/claude-skill-social-post**，不是自動送往上游。
 
-程式／內容入口：[social-post/SKILL.md](social-post/SKILL.md)、[social-post/scripts/](social-post/scripts/)、[social-post/references/](social-post/references/)、[chatgpt-socialpost/](chatgpt-socialpost/)、[docs/](docs/)。協作先讀 [CONTRIBUTING.md](CONTRIBUTING.md)，讓 Agent 讀 [AGENTS.md](AGENTS.md)；從[本倉 Issues](https://github.com/FreeTWAI-AI/claude-skill-social-post/issues)認領、[查看既有 PR](https://github.com/FreeTWAI-AI/claude-skill-social-post/pulls)避免重工。
+程式／內容入口：[social-post/SKILL.md](social-post/SKILL.md)、[social-post/scripts/](social-post/scripts/)、[social-post/references/](social-post/references/)、[chatgpt-socialpost/](chatgpt-socialpost/)、[docs/](docs/)。協作先讀 [CONTRIBUTING.md](CONTRIBUTING.md)，讓 Agent 讀 [AGENTS.md](AGENTS.md)；從[本倉 Issues](https://github.com/FreeTWAI/claude-skill-social-post/issues)認領、[查看既有 PR](https://github.com/FreeTWAI/claude-skill-social-post/pulls)避免重工。
 
-私人的聲線、cookies、帳號資料與洞察由本人管理；中央行銷紀錄不授予 Meta／其他平台發布權。沿用上游單次送出與 capability gates，不把離線 fixture 當真發布證據。 跨 repo 的協定由[中央平台](https://github.com/FreeTWAI-AI/freedom-platform)維護。
+私人的聲線、cookies、帳號資料與洞察由本人管理；中央行銷紀錄不授予 Meta／其他平台發布權。沿用上游單次送出與 capability gates，不把離線 fixture 當真發布證據。 跨 repo 的協定由[中央平台](https://github.com/FreeTWAI/freedom-platform)維護。
 <!-- freedom-repository-guide:end -->
 
 一個可安裝到 Codex 或 Claude Code 的社群內容 Skill；另提供精簡的 ChatGPT Chat 版。可學習本機聲線、規劃內容、撰寫平台化貼文、經確認後發布，以已登入 Chrome 受控管理 FB／IG／Threads 留言，並把跨平台洞察保存成可驗證的結構化資料。
