@@ -31,6 +31,10 @@ The local skill uses six modes to handle the social post lifecycle:
 *   **P4 Optimize Patterns:** Cross-post/cross-platform comparisons after aligning maturity.
 *   **P5 Comment Ops:** Chrome-controlled scanning, drafting, and approval (live replies require canary unlock).
 
+## CLI API Reference
+
+For detailed documentation on the command-line interfaces for data analysis (`social_data.py`) and browser-controlled comment operations (`comment_assistant.py`), please see the [CLI API Reference](api-reference.md).
+
 ## Parameter Schemas
 
 The skill relies on JSONL structured data for canonical tracking. The primary schemas are:
