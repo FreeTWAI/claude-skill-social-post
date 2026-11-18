@@ -18,6 +18,15 @@
 
 一個可安裝到 Codex 或 Claude Code 的社群內容 Skill；另提供精簡的 ChatGPT Chat 版。可學習本機聲線、規劃內容、撰寫平台化貼文、經確認後發布，以已登入 Chrome 受控管理 FB／IG／Threads 留言，並把跨平台洞察保存成可驗證的結構化資料。
 
+## Core Modules
+
+- **`social_data.py`**: Used for data analysis, validation, and generating insights from stored JSONL data. Supports building feature matrices and retrieving comparable context.
+  - *Example usage:* `python social-post/scripts/social_data.py validate`
+  - *Example usage:* `python social-post/scripts/social_data.py summary --series <series_id>`
+- **`comment_assistant.py`**: Manages the Chrome-controlled scanning, drafting, and approval of comments and replies (Comment Ops). Handles the P5 Live Preflight Contract and capability state validation.
+  - *Example usage:* `python social-post/scripts/comment_assistant.py validate`
+  - *Example usage:* `python social-post/scripts/comment_assistant.py queue --format json`
+
 目前穩定標籤：**v2.5.0**；`main` 已同步 **Unreleased candidate**。
 
 Unreleased candidate 有封閉 JavaScript 模組清單、固定 browser-runtime revision／雜湊、架構自校準與單次送出／異常恢復的回歸測試。另已完成一次 IG 真實單次送出、原生子回覆查證與唯讀 recovery 對帳，以及一次 Chrome 斷線後的來源連線恢復與原目標讀取；這些證據不代表三平台 live Meta 回覆已解鎖。
@@ -77,20 +86,19 @@ Cleanup 保留固定的程式長度警告與未測項，不以調高門檻消除
 - 任何 timeout、導頁、矛盾狀態或不明結果一律 `needs_reconcile`，不自動重點；重新檢視仍不確定就保持 `NO_CHANGE`。
 - 正式 ledger 會拒絕可繞過 bridge 的 raw begin／finish／reconcile；三平台匿名 fixture 與負向測試可安全開源。
 
-## 安裝
+## Setup
 
 ```bash
 git clone https://github.com/Hao0321/claude-skill-social-post.git
 ```
 
-Codex（Windows PowerShell）：
-
+Codex (Windows PowerShell):
 ```powershell
 New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills" | Out-Null
 Copy-Item -Recurse ".\claude-skill-social-post\social-post" "$env:USERPROFILE\.codex\skills\social-post"
 ```
 
-Claude Code：把目的地改成 `.claude\skills\social-post`。macOS／Linux 可複製到 `~/.codex/skills/social-post/` 或 `~/.claude/skills/social-post/`。
+Claude Code: Change destination to `.claude\skills\social-post`. For macOS/Linux, copy `social-post/` to `~/.codex/skills/social-post/` or `~/.claude/skills/social-post/`.
 
 ChatGPT Chat：可在「技能 → 建立 → 透過編輯器建立」使用 [`chatgpt-socialpost/SKILL.md`](chatgpt-socialpost/SKILL.md) 的公開規則，並在個人化設定保留自己的私人語氣簡卡。這個精簡版不包含本機分析腳本、Chrome 留言操作或任何作者的私人樣本；只安裝公開規則，不代表已完成個人聲線校準。不要把私人貼文、帳號數據或憑證提交到本 repo。
 
@@ -115,35 +123,36 @@ Copy-Item content_plan.example.md content_plan.md
 | P4 Optimize Patterns | 對齊 maturity 後做跨篇／跨平台比較 |
 | P5 Comment Ops | 以 Chrome 受控掃描、草擬與核准；live 回覆需另經 canary 解鎖 |
 
-## Comment Ops 快速開始
+## Comment Ops Usage
 
-P5 不串 Meta API，也不匯出 Chrome Cookie 或 session。預設是 `batch_confirm`，不提供 24/7 背景監聽或無邊界全自動模式。`main` 的受控掃描與送出採獨立政策；核准回覆不會繞過 default-off 送出開關。實際 Chrome 操作需要 `chrome:control-chrome`、使用者既有登入狀態與來源綁定 adapter。已驗證的單則 IG canary 不代表其他留言、平台或批次路徑已驗證。
+P5 does not use Meta APIs and does not export Chrome Cookies or sessions. It relies on user confirmation (`batch_confirm`) and does not provide an unattended 24/7 auto-reply mode. Live Meta replies remain disabled by default in `main`. Actual Chrome operation requires `chrome:control-chrome`, a logged-in session, and source-bound adapters.
 
-Codex 與 Claude Code 都能使用 P0–P4、P5 的離線草稿／政策／ledger／測試功能。現有 existing-session Chrome runtime 則固定依賴 Codex bundled Chrome revision；Claude Code 或獨立公開 clone 找不到精確 runtime 時會 fail closed，不會改走未審核的瀏覽器路徑，也不代表 Claude 安裝已具備 live Meta 控制能力。
+Both Codex and Claude Code can use the offline draft/policy/ledger/test functions for P0–P5. Live actions depend strictly on matching the fixed Chrome revision.
 
-```powershell
-$env:PYTHONUTF8='1'
-python scripts/comment_assistant.py validate
-python scripts/comment_assistant.py queue --format json
-python scripts/comment_self_test.py
-python scripts/comment_capability_gate.py
-node scripts/comment_chrome_actuator_test.mjs
-node scripts/comment_chrome_claim_bridge_test.mjs
-node scripts/comment_chrome_claim_integration_test.mjs
-node scripts/comment_js_architecture_gate.mjs --self-test
+```bash
+# Validate ledger states
+python social-post/scripts/comment_assistant.py validate
+
+# View pending comment queue in JSON format
+python social-post/scripts/comment_assistant.py queue --format json
 ```
 
 實際流程與停損條件見 [`comment-operations.md`](social-post/references/comment-operations.md)，JSON bridge contract 見 [`chrome-comment-adapter.md`](social-post/references/chrome-comment-adapter.md)。定位依當下可見 DOM／accessibility state 建立，不使用一組長期寫死的 Meta selector。所有 ledger command 預設 dry-run，明確加上 `--write` 才會寫入本機。
 
-## Outcome 快速開始
+## Outcome Analytics Usage
 
-```powershell
-$env:PYTHONUTF8='1'
-python scripts/log_outcome.py references/outcome-bundle.example.json
-python scripts/self_test.py
-python scripts/social_data.py validate
-python scripts/social_data.py coverage
-python scripts/social_data.py summary --series demo-series
+```bash
+# Preview parsing outcome bundle
+python social-post/scripts/log_outcome.py social-post/references/outcome-bundle.example.json
+
+# Validate existing data structure
+python social-post/scripts/social_data.py validate
+
+# Validate complete feature coverage
+python social-post/scripts/social_data.py coverage
+
+# Produce outcome summary for a series
+python social-post/scripts/social_data.py summary --series demo-series
 ```
 
 正式寫入時才加 `--write`。修正既有 event 可參考 [`correction-bundle.example.json`](social-post/references/correction-bundle.example.json)。

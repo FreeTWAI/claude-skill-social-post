@@ -1,13 +1,13 @@
 # Setup
 
-## 1. 安裝 skill
+## 1. Install Skill
 
-Clone repo，將 `social-post/` 複製到其中一個位置：
+Clone the repository and copy the `social-post/` directory to one of the following locations:
 
-- Codex：`~/.codex/skills/social-post/`
-- Claude Code：`~/.claude/skills/social-post/`
+- **Codex:** `~/.codex/skills/social-post/`
+- **Claude Code:** `~/.claude/skills/social-post/`
 
-Windows PowerShell（Codex）：
+For Windows PowerShell (Codex):
 
 ```powershell
 git clone https://github.com/Hao0321/claude-skill-social-post.git
@@ -15,14 +15,23 @@ New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills" | Out-Null
 Copy-Item -Recurse ".\claude-skill-social-post\social-post" "$env:USERPROFILE\.codex\skills\social-post"
 ```
 
-## 2. 建立私人工作檔
-
-在安裝後的 `social-post/` 目錄執行：
-
-```powershell
-Copy-Item style_profile.example.md style_profile.md
-Copy-Item content_plan.example.md content_plan.md
+For macOS/Linux (Bash):
+```bash
+git clone https://github.com/Hao0321/claude-skill-social-post.git
+mkdir -p ~/.claude/skills
+cp -r claude-skill-social-post/social-post ~/.claude/skills/social-post
 ```
+
+## 2. Create Private Work Files
+
+In the installed `social-post/` directory, run:
+
+```bash
+cp style_profile.example.md style_profile.md
+cp content_plan.example.md content_plan.md
+```
+
+*(For Windows PowerShell, use `Copy-Item` instead of `cp`.)*
 
 這兩個檔案與日後建立的 `data/` 都不應提交到公開 fork。
 
@@ -47,30 +56,30 @@ Copy-Item content_plan.example.md content_plan.md
 
 未確認就不發布，也不代為登入、切換隱私或刪除貼文。
 
-## 5. 記錄成效
+## 5. Log Outcome Analytics
 
-先複製 example bundle 並換成自己的數據：
+From the repository root directory, first copy the example bundle and update it with your own data:
 
-```powershell
-Copy-Item references/outcome-bundle.example.json my-outcome.json
-python scripts/log_outcome.py my-outcome.json
+```bash
+cp social-post/references/outcome-bundle.example.json my-outcome.json
+python social-post/scripts/log_outcome.py my-outcome.json
 ```
 
-第一個指令只 dry-run。確認內容後才寫入：
+The first script run is a dry-run. Once you confirm the contents, write them:
 
-```powershell
-python scripts/log_outcome.py my-outcome.json --write
-python scripts/social_data.py validate
+```bash
+python social-post/scripts/log_outcome.py my-outcome.json --write
+python social-post/scripts/social_data.py validate
 ```
 
-同一貼文日後追加快照時，bundle 可以省略 `post`，只保留新的 `snapshot`；舊快照不會被覆蓋。
+When appending snapshots for the same post later, you can omit the `post` block in the bundle and only provide the new `snapshot`; older snapshots won't be overwritten.
 
-## 6. 比較系列與規則
+## 6. Compare Series and Rules
 
-```powershell
-python scripts/social_data.py summary --series your-series-id
-python scripts/build_rule_registry.py --write
-python scripts/self_test.py
+```bash
+python social-post/scripts/social_data.py summary --series your-series-id
+python social-post/scripts/build_rule_registry.py --write
+python social-post/scripts/self_test.py
 ```
 
 只比較 maturity 接近的快照。若故事、首幀、文案與發布時間一起改變，必須列為 confound，不能稱為乾淨 A/B。
